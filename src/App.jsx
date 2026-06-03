@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 
+// Constants of text being reused
+const DELETE_CONFIRMATION = 'Are you sure you want to delete the task?';
+const EMPTY_TASKS_MESSAGE = 'No tasks added';
+
 // Encapsulate the ID generation so that it can only
 // be read and is protected from external modification.
 const newID = (() => {
@@ -19,7 +23,7 @@ export default function App() {
 
   return (
     <div>
-      <h1>Todo List</h1>
+      <h1 id="todo-list-heading">Todo List</h1>
       {/* Use a form instead. */}
       <form
         onSubmit={(event) => {
@@ -40,6 +44,7 @@ export default function App() {
           setNewTask('');
         }}>
         <input
+          className="border border-gray-300 rounded px-2 py-1 mb-4"
           aria-label="Add new task"
           type="text"
           placeholder="Add your task"
@@ -49,23 +54,25 @@ export default function App() {
           }
         />
         <div>
-          <button>Submit</button>
+          <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 mb-4 rounded">Submit</button>
         </div>
       </form>
       {/* Display an empty message when there are no tasks */}
       {tasks.length === 0 ? (
-        <div>No tasks added</div>
+        <div>{EMPTY_TASKS_MESSAGE}</div>
       ) : (
-        <ul>
-          {tasks.map(({ id, label }) => (
-            <li key={id}>
-              <span>{label}</span>
-              <button
+        <table className="mx-auto border-collapse">
+          <tbody>
+            {tasks.map(({ id, label }) => (
+              <tr key={id}>
+                <td className="text-left px-4 py-2">{label}</td>
+                <td className="px-4 py-2">
+                  <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded"
                 onClick={() => {
                   // Add confirmation before destructive actions.
                   if (
                     window.confirm(
-                      'Are you sure you want to delete the task?',
+                      DELETE_CONFIRMATION,
                     )
                   ) {
                     setTasks(
@@ -77,9 +84,11 @@ export default function App() {
                 }}>
                 Delete
               </button>
-            </li>
-          ))}
-        </ul>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
     </div>
   );

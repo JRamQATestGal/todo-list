@@ -16,8 +16,8 @@ test.describe('Todo app', () => {
   });
   test('loads initial tasks', async () => {
     await expect(todoPage.page.locator('#todo-list-heading')).toBeVisible();
-    await expect(todoPage.page.getByRole('list')).toBeVisible();
-    await expect(todoPage.page.getByRole('listitem')).toHaveCount(3);
+    await expect(todoPage.page.getByRole('table')).toBeVisible();
+    await expect(todoPage.page.locator('tbody tr')).toHaveCount(3);
 
     await expect(todoPage.page.getByText('Walk the dog')).toBeVisible();
     await expect(todoPage.page.getByText('Water the plants')).toBeVisible();
@@ -27,7 +27,7 @@ test.describe('Todo app', () => {
   test('can add a new task', async () => {
     await todoPage.addTask('Finish coding exercise');
 
-    await expect(todoPage.page.getByRole('listitem')).toHaveCount(4);
+    await expect(todoPage.page.locator('tbody tr')).toHaveCount(4);
     await expect(todoPage.page.getByText('Finish coding exercise')).toBeVisible();
   });
 
@@ -35,7 +35,7 @@ test.describe('Todo app', () => {
     await todoPage.deleteTask('Walk the dog');
 
     await expect(todoPage.page.getByText('Walk the dog')).not.toBeVisible();
-    await expect(todoPage.page.getByRole('listitem')).toHaveCount(2);
+    await expect(todoPage.page.locator('tbody tr')).toHaveCount(2);
   });
 
   test('can delete all tasks', async () => {

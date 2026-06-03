@@ -7,6 +7,32 @@ Currently, two official plugins are available:
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
 - [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
+## Tailwind CSS
+
+This project includes **Tailwind CSS v4** for utility-first styling.
+
+### Setup
+Tailwind is already configured with:
+- **Entry point**: `src/index.css` with `@import "tailwindcss"`
+- **Config**: `tailwind.config.cjs` with content paths for JSX files
+- **PostCSS**: `postcss.config.cjs` loads `@tailwindcss/postcss` plugin
+
+### Usage
+Use Tailwind classes directly in your JSX:
+```jsx
+<button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+  Click me
+</button>
+```
+
+### Build & Dev
+```bash
+npm run dev      # Vite dev server with Tailwind HMR
+npm run build    # Production build with optimized CSS
+```
+
+For more Tailwind docs, see: [tailwindcss.com](https://tailwindcss.com)
+
 ## React Compiler
 
 The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).

@@ -3,10 +3,10 @@ import { test as baseTest, expect as baseExpect } from '@playwright/test';
 import { TodoPage } from '../pages/TodoPage.js';
 
 const test = baseTest.extend({
-  todoPage: async ({ page }, use) => {
+  todoPage: async ({ page }, run) => {
     const todo = new TodoPage(page);
     await todo.goto();
-    await use(todo);
+    await run(todo);
   },
 });
 

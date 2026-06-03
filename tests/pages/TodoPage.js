@@ -5,7 +5,7 @@ export class TodoPage {
     this.page = page;
     this.input = page.getByRole('textbox', { name: 'Add new task' });
     this.submit = page.getByRole('button', { name: 'Submit' });
-    this.items = page.locator('li');
+    this.items = page.locator('tbody tr');
   }
 
   async goto() {
@@ -19,7 +19,7 @@ export class TodoPage {
 
   async deleteTask(label) {
     this.page.once('dialog', (d) => d.accept());
-    await this.page.locator('li', { hasText: label }).getByRole('button', { name: 'Delete' }).click();
+    await this.page.locator('tbody tr', { hasText: label }).getByRole('button', { name: 'Delete' }).click();
   }
 
   async deleteAll() {
