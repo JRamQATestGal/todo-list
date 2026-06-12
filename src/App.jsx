@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 
 // Constants of text being reused
 const DELETE_CONFIRMATION = 'Are you sure you want to delete the task?';
@@ -11,6 +11,43 @@ const newID = (() => {
   return () => id++;
 })();
 
+const TaskRow = React.memo(function TaskRow({ id, label, onDelete }) {
+  return (
+    <tr>
+      <td className="text-left px-4 py-2">{label}</td>
+      <td className="px-4 py-2">
+        <button
+          className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded"
+          onClick={() => onDelete(id)}>
+          Delete
+        </button>
+      </td>
+    </tr>
+  );
+});
+
+const TodoForm = React.memo(function TodoForm({ newTask, onNewTaskChange, onSubmit }) {
+  return (
+    <form onSubmit={onSubmit}>
+      <input
+        className="border border-gray-300 rounded px-2 py-1 mb-4"
+        aria-label="Add new task"
+        type="text"
+        placeholder="Add your task"
+        value={newTask}
+        onChange={onNewTaskChange}
+      />
+      <div>
+        <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 mb-4 rounded">Submit</button>
+      </div>
+    </form>
+  );
+});
+
+const EmptyState = React.memo(function EmptyState({ message }) {
+  return <div>{message}</div>;
+});
+
 const INITIAL_TASKS = [
   { id: newID(), label: 'Walk the dog' },
   { id: newID(), label: 'Water the plants' },
@@ -21,71 +58,48 @@ export default function App() {
   const [tasks, setTasks] = useState(INITIAL_TASKS);
   const [newTask, setNewTask] = useState('');
 
+  const handleDelete = useCallback((id) => {
+    if (window.confirm(DELETE_CONFIRMATION)) {
+      setTasks((current) => current.filter((task) => task.id !== id));
+    }
+  }, []);
+
+  const handleNewTaskChange = useCallback((event) => {
+    setNewTask(event.target.value);
+  }, []);
+
+  const handleSubmit = useCallback(
+    (event) => {
+      event.preventDefault();
+      if (newTask.trim() === '') {
+        return;
+      }
+      setTasks((current) => [
+        ...current,
+        { id: newID(), label: newTask.trim() },
+      ]);
+      setNewTask('');
+    },
+    [newTask],
+  );
+
   return (
     <div>
       <h1 id="todo-list-heading">Todo List</h1>
       {/* Use a form instead. */}
-      <form
-        onSubmit={(event) => {
-          // Listen to onSubmit events so that it works for both "Enter" key and
-          // click of the submit <button>.
-          event.preventDefault();
-          // Trim the field and don't add to the list if it's empty.
-          if (newTask.trim() === '') {
-            return;
-          }
-
-          // Trim the value before adding it to the tasks.
-          setTasks([
-            ...tasks,
-            { id: newID(), label: newTask.trim() },
-          ]);
-          // Clear the <input> field after successful submission.
-          setNewTask('');
-        }}>
-        <input
-          className="border border-gray-300 rounded px-2 py-1 mb-4"
-          aria-label="Add new task"
-          type="text"
-          placeholder="Add your task"
-          value={newTask}
-          onChange={(event) =>
-            setNewTask(event.target.value)
-          }
-        />
-        <div>
-          <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 mb-4 rounded">Submit</button>
-        </div>
-      </form>
+      <TodoForm
+        newTask={newTask}
+        onNewTaskChange={handleNewTaskChange}
+        onSubmit={handleSubmit}
+      />
       {/* Display an empty message when there are no tasks */}
       {tasks.length === 0 ? (
-        <div>{EMPTY_TASKS_MESSAGE}</div>
+        <EmptyState message={EMPTY_TASKS_MESSAGE} />
       ) : (
         <table className="mx-auto border-collapse">
           <tbody>
             {tasks.map(({ id, label }) => (
-              <tr key={id}>
-                <td className="text-left px-4 py-2">{label}</td>
-                <td className="px-4 py-2">
-                  <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded"
-                onClick={() => {
-                  // Add confirmation before destructive actions.
-                  if (
-                    window.confirm(
-                      DELETE_CONFIRMATION,
-                    )
-                  ) {
-                    setTasks(
-                      tasks.filter(
-                        (task) => task.id !== id,
-                      ),
-                    );
-                  }
-                }}>
-                Delete
-              </button>
-                </td>
-              </tr>
+              <TaskRow key={id} id={id} label={label} onDelete={handleDelete} />
             ))}
           </tbody>
         </table>

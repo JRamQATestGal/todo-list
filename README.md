@@ -1,42 +1,27 @@
-# React + Vite
+# To-Do React + Testing Strategy Demonstration (or To-Do React app but "make it fancy")
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a small to-do list app built to demostrate two following:
 
-Currently, two official plugins are available:
+- that I can write clean performance-minded React Application.  
+- that I can build a AI-assisted test Suite that I can trust in production
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+# Teck Stack
+- React (web framework)
+- Tailwind CSS (because I have better things to do than to create a CSS framework from scratch)
+- Playwright (with MS Copilot and MCP Playwright in the loop)
 
-## Tailwind CSS
+# The Problem
+A To-Do App is trivial to build, but deceptively hard to test well.  The interesting failures don't
+live in the happy path -- they are in the edge cases: empty states, rapid doublt-submits, partial
+network failures, stale UI after an async write.
 
-This project includes **Tailwind CSS v4** for utility-first styling.
+This project is always "in-progress."
 
-### Setup
-Tailwind is already configured with:
-- **Entry point**: `src/index.css` with `@import "tailwindcss"`
-- **Config**: `tailwind.config.cjs` with content paths for JSX files
-- **PostCSS**: `postcss.config.cjs` loads `@tailwindcss/postcss` plugin
-
-### Usage
-Use Tailwind classes directly in your JSX:
-```jsx
-<button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
-  Click me
-</button>
-```
-
-### Build & Dev
+# Build & Dev
 ```bash
 npm run dev      # Vite dev server with Tailwind HMR
 npm run build    # Production build with optimized CSS
-```
 
-For more Tailwind docs, see: [tailwindcss.com](https://tailwindcss.com)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+# Run Playwright Tests
+npx playwright test tests/todo.spec.js --reporter=list,html   # Run Playwright Test
+npx playwright show-report                                    # Show report after test

@@ -6,47 +6,53 @@ import { TodoPage } from './pages/TodoPage.js';
  * @type {TodoPage}
  */
 let todoPage;
+const INITIAL_TASKS_COUNT = 3;
 
 test.describe('Todo app', () => {
-  test.beforeEach(async ({ page }) => {
-    // navigate and reload to ensure app state is reset between tests
-    await page.goto('http://localhost:5173/');
-    await page.reload();
-    todoPage = new TodoPage(page);
-  });
-  test('loads initial tasks', async () => {
-    await expect(todoPage.page.locator('#todo-list-heading')).toBeVisible();
-    await expect(todoPage.page.getByRole('table')).toBeVisible();
-    await expect(todoPage.page.locator('tbody tr')).toHaveCount(3);
+    /**
+     * @type {TodoPage}
+     */
+    test.beforeEach(async ({ page }) => {
+        // navigate and reload to ensure app state is reset between tests
+        todoPage = new TodoPage(page);
+        await todoPage.goto();
+        await page.reload();
+    });
 
-    await expect(todoPage.page.getByText('Walk the dog')).toBeVisible();
-    await expect(todoPage.page.getByText('Water the plants')).toBeVisible();
-    await expect(todoPage.page.getByText('Wash the dishes')).toBeVisible();
-  });
+    test('loads initial tasks', async () => {
+            await expect(todoPage.heading).toBeVisible();
+        await expect(todoPage.table).toBeVisible();
+        await expect(todoPage.items).toHaveCount(INITIAL_TASKS_COUNT);
 
-  test('can add a new task', async () => {
-    await todoPage.addTask('Finish coding exercise');
+        await expect(await todoPage.hasTask('Walk the dog')).toBe(true);
+        await expect(await todoPage.hasTask('Water the plants')).toBe(true);
+        await expect(await todoPage.hasTask('Wash the dishes')).toBe(true);
+    });
 
-    await expect(todoPage.page.locator('tbody tr')).toHaveCount(4);
-    await expect(todoPage.page.getByText('Finish coding exercise')).toBeVisible();
-  });
+    test('can add a new task', async () => {
+        await todoPage.addTask('Finish coding exercise');
 
-  test('can delete a task', async () => {
-    await todoPage.deleteTask('Walk the dog');
+        await expect(todoPage.items).toHaveCount(INITIAL_TASKS_COUNT + 1);
+        await expect(await todoPage.hasTask('Finish coding exercise')).toBe(true);
+    });
 
-    await expect(todoPage.page.getByText('Walk the dog')).not.toBeVisible();
-    await expect(todoPage.page.locator('tbody tr')).toHaveCount(2);
-  });
+    test('can delete a task', async () => {
+        await todoPage.deleteTask('Walk the dog');
 
-  test('can delete all tasks', async () => {
-    await todoPage.deleteAll();
+        await expect(await todoPage.hasTask('Walk the dog')).toBe(false);
+        await expect(todoPage.items).toHaveCount(2);
+    });
 
-    await expect(await todoPage.taskCount()).toBe(0);
-  });
+    test('can delete all tasks', async () => {
+        await todoPage.deleteAll();
 
-  test('shows empty message when no tasks', async () => {
-    await todoPage.deleteAll();
+        await expect(await todoPage.taskCount()).toBe(0);
+    });
 
-    await expect(todoPage.page.getByText('No tasks added')).toBeVisible();
-  });
+    test('shows empty message when no tasks', async () => {
+        await todoPage.deleteAll();
+
+        await expect(await todoPage.hasNoTasks()).toBe(true);
+        await expect(await todoPage.hasEmptyMessage()).toBe(true);
+    });
 });

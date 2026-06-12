@@ -3,9 +3,12 @@ export class TodoPage {
   /** @param {import('@playwright/test').Page} page */
   constructor(page) {
     this.page = page;
+    this.heading = page.getByRole('heading', { name: 'Todo List' });
+    this.table = page.getByRole('table');
     this.input = page.getByRole('textbox', { name: 'Add new task' });
     this.submit = page.getByRole('button', { name: 'Submit' });
     this.items = page.locator('tbody tr');
+    this.emptyMessage = page.getByText('No tasks added');
   }
 
   async goto() {
@@ -36,7 +39,19 @@ export class TodoPage {
     return this.items.count();
   }
 
+  taskRow(label) {
+    return this.page.locator('tbody tr', { hasText: label });
+  }
+
+  async hasTask(label) {
+    return this.taskRow(label).isVisible();
+  }
+
+  async hasNoTasks() {
+    return (await this.taskCount()) === 0;
+  }
+
   async hasEmptyMessage() {
-    return this.page.getByText('No tasks added').isVisible();
+    return this.emptyMessage.isVisible();
   }
 }
