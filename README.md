@@ -25,3 +25,5 @@ npm run build    # Production build with optimized CSS
 # Run Playwright Tests
 npx playwright test tests/todo.spec.js --reporter=list,html   # Run Playwright Test
 npx playwright show-report                                    # Show report after test
+
+CI: trigger workflow (minor commit)
