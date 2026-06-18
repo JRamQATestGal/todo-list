@@ -1,6 +1,6 @@
 # To-Do React + Testing Strategy Demonstration (or To-Do React app but "make it fancy")
 
-This is a small to-do list app built to demostrate two following:
+This is a small to-do list app built to demostrate the following:
 
 - that I can write clean performance-minded React Application.  
 - that I can build a AI-assisted test Suite that I can trust in production
