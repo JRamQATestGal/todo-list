@@ -45,17 +45,19 @@ const TodoForm = React.memo(function TodoForm({ newTask, onNewTaskChange, onSubm
 });
 
 const EmptyState = React.memo(function EmptyState({ message }) {
-  return <div>{message}</div>;
+  return <div className="text-gray-500 my-8 font-medium">{message}</div>;
 });
 
-const INITIAL_TASKS = [
-  { id: newID(), label: 'Walk the dog' },
-  { id: newID(), label: 'Water the plants' },
-  { id: newID(), label: 'Wash the dishes' },
-];
+function getInitialTasks() {
+  return [
+    { id: newID(), label: 'Walk the dog' },
+    { id: newID(), label: 'Water the plants' },
+    { id: newID(), label: 'Wash the dishes' },
+  ];
+}
 
 export default function App() {
-  const [tasks, setTasks] = useState(INITIAL_TASKS);
+  const [tasks, setTasks] = useState(getInitialTasks);
   const [newTask, setNewTask] = useState('');
 
   const handleDelete = useCallback((id) => {
