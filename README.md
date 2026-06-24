@@ -32,3 +32,6 @@ npm run dev          # Vite + Tailwind HMR
 # Run Playwright + MCP tests
 npx playwright test --reporter=html
 npx playwright show-report
+
+# Prompts I have used for this project
+/prompts/prompts.md
