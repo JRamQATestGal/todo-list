@@ -16,6 +16,7 @@ test.describe('Todo app', () => {
         // navigate and reload to ensure app state is reset between tests
         todoPage = new TodoPage(page);
         await todoPage.goto();
+        await page.evaluate(() => localStorage.clear()); 
         await page.reload();
     });
 

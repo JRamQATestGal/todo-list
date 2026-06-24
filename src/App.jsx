@@ -1,15 +1,24 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 
 // Constants of text being reused
 const DELETE_CONFIRMATION = 'Are you sure you want to delete the task?';
 const EMPTY_TASKS_MESSAGE = 'No tasks added';
+const LOCAL_STORAGE_KEY = 'todo_list_tasks';
+
+function getInitialTasks() {
+  return [
+    { id: 'task-1', label: 'Walk the dog' },
+    { id: 'task-2', label: 'Water the plants' },
+    { id: 'task-3', label: 'Wash the dishes' },
+  ];
+}
 
 // Encapsulate the ID generation so that it can only
 // be read and is protected from external modification.
-const newID = (() => {
-  let id = 0;
-  return () => id++;
-})();
+// const newID = (() => {
+//   let id = 0;
+//   return () => id++;
+// })();
 
 const TaskRow = React.memo(function TaskRow({ id, label, onDelete }) {
   return (
@@ -48,17 +57,17 @@ const EmptyState = React.memo(function EmptyState({ message }) {
   return <div className="text-gray-500 my-8 font-medium">{message}</div>;
 });
 
-function getInitialTasks() {
-  return [
-    { id: newID(), label: 'Walk the dog' },
-    { id: newID(), label: 'Water the plants' },
-    { id: newID(), label: 'Wash the dishes' },
-  ];
-}
-
 export default function App() {
-  const [tasks, setTasks] = useState(getInitialTasks);
+  const [tasks, setTasks] = useState(() => {
+    const savedTasks = localStorage.getItem(LOCAL_STORAGE_KEY);
+    return savedTasks ? JSON.parse(savedTasks) : getInitialTasks();
+  });
+
   const [newTask, setNewTask] = useState('');
+
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(tasks));
+  }, [tasks]);
 
   const handleDelete = useCallback((id) => {
     if (window.confirm(DELETE_CONFIRMATION)) {
@@ -78,7 +87,7 @@ export default function App() {
       }
       setTasks((current) => [
         ...current,
-        { id: newID(), label: newTask.trim() },
+        { id: `task-${crypto.randomUUID()}`, label: newTask.trim() },
       ]);
       setNewTask('');
     },
