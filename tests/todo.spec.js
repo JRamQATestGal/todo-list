@@ -1,4 +1,3 @@
-// @ts-check
 import { test, expect } from '@playwright/test';
 import { TodoPage } from './pages/TodoPage.js';
 

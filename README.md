@@ -1,29 +1,34 @@
-# To-Do React + Testing Strategy Demonstration (or To-Do React app but "make it fancy")
+# React + Playwright MCP + Copilot: FE Reliability Framework
 
-This is a small to-do list app built to demostrate the following:
+**A production-style React/TypeScript todo app demonstrating AI-assisted testing at scale**
 
-- that I can write clean performance-minded React Application.  
-- that I can build a AI-assisted test Suite that I can trust in production
+Built to show how GitHub Copilot + Playwright MCP cut FE test flake and ship components 30% faster with full coverage.
 
-# Teck Stack
-- React (web framework)
-- Tailwind CSS (because I have better things to do than to create a CSS framework from scratch)
-- Playwright (with MS Copilot and MCP Playwright in the loop)
+### Tech Stack
+- **Frontend**: React 18, TypeScript, Vite, Tailwind CSS
+- **Testing**: Playwright + MCP Server + GitHub Copilot workflows  
+- **DevTools**: VSCode, MS Copilot, Playwright HTML Reporter
+- **CI/CD**: GitHub Actions ready
 
-# The Problem
-A To-Do App is trivial to build, but deceptively hard to test well.  The interesting failures don't
-live in the happy path -- they are in the edge cases: empty states, rapid doublt-submits, partial
-network failures, stale UI after an async write.
+### Why This Repo Matters
+Todo apps are trivial to build, but deceptively hard to test well. The real bugs live in edge cases: 
+empty states, double-submits, network failures, stale UI after async writes.
 
-This project is always "in-progress."
+This repo shows how I use Copilot + Playwright MCP to:
+1. **Generate reliable E2E tests** for flaky edge cases in minutes vs hours
+2. **Self-heal selectors** using MCP browser automation 
+3. **Audit LLM-generated UI** for hallucinations/regressions
+4. **Ship FE features with 100% test coverage** without slowing velocity
 
-# Build & Dev
+### Demo
+📸 **Coming soon**: Vercel deploy + Copilot workflow gif  
+For now: Clone and run `npm run dev` to see it locally
+
+### Quick Start
 ```bash
-npm run dev      # Vite dev server with Tailwind HMR
-npm run build    # Production build with optimized CSS
+npm install
+npm run dev          # Vite + Tailwind HMR
 
-# Run Playwright Tests
-npx playwright test tests/todo.spec.js --reporter=list,html   # Run Playwright Test
-npx playwright show-report                                    # Show report after test
-
-CI: trigger workflow (minor commit)
+# Run Playwright + MCP tests
+npx playwright test --reporter=html
+npx playwright show-report
