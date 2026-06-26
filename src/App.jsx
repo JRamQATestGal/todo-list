@@ -13,13 +13,6 @@ function getInitialTasks() {
   ];
 }
 
-// Encapsulate the ID generation so that it can only
-// be read and is protected from external modification.
-// const newID = (() => {
-//   let id = 0;
-//   return () => id++;
-// })();
-
 const TaskRow = React.memo(function TaskRow({ id, label, onDelete }) {
   return (
     <tr>

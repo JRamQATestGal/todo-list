@@ -2,7 +2,13 @@
 
 **A production-style React/TypeScript todo app demonstrating AI-assisted testing at scale**
 
-Built to show how GitHub Copilot + Playwright MCP cut FE test flake and ship components 30% faster with full coverage.
+Built to demonstrate AI-assisted testing patterns that reduce E2E test maintenance and keep CI stable as the UI evolves.
+
+### Live Demo
+https://todo-list-mocha-two-89.vercel.app/
+
+Mobile-responsive React + TypeScript app. 
+Data persists on page refresh via localStorage.
 
 ### Tech Stack
 - **Frontend**: React 18, TypeScript, Vite, Tailwind CSS
@@ -19,10 +25,6 @@ This repo shows how I use Copilot + Playwright MCP to:
 2. **Self-heal selectors** using MCP browser automation 
 3. **Audit LLM-generated UI** for hallucinations/regressions
 4. **Ship FE features with 100% test coverage** without slowing velocity
-
-### Demo
-📸 **Coming soon**: Vercel deploy + Copilot workflow gif  
-For now: Clone and run `npm run dev` to see it locally
 
 ### Quick Start
 ```bash
