@@ -20,7 +20,7 @@ export default defineConfig({
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    baseURL: process.env.CI 
+    baseURL: CI 
         ? 'https://todo-list-jramberg.vercel.app' 
         : 'http://localhost:5173',
     trace: 'on-first-retry',

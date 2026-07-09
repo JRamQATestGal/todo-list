@@ -8,6 +8,10 @@
     "build": "vite build",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
+    "test:smoke": "npx playwright test tests/smoke.spec.js --reporter=html --workers=1",
+    "test:styling": "npx playwright test tests/styling.spec.js --reporter=html --workers=1",
+    "test:todo": "npx playwright test tests/todo.spec.js --reporter=html --workers=1",
+    "test:regression": "npx playwright test tests/regression.spec.js --reporter=html --workers=1",
     "lint": "eslint .",
     "preview": "vite preview"
   },
